@@ -1,6 +1,7 @@
 package com.maas.soft.i_eye.ui.reserve_before
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -38,7 +39,7 @@ class SearchingForLocationActivity : AppCompatActivity() {
 
     private fun getCurrentLoc() {
         locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager?
-        var userLocation: Location = getLatLng()
+        var userLocation: Location? = getLatLng()
         userLocation?.let {
             latitude = userLocation.latitude
             longitude = userLocation.longitude
@@ -61,17 +62,13 @@ class SearchingForLocationActivity : AppCompatActivity() {
         }
     }
 
-    private fun getLatLng() : Location {
-        var currentLatLng: Location? = null
-        if (ActivityCompat.checkSelfPermission(applicationContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(applicationContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), this.REQUEST_CODE_LOCATION)
-            getLatLng()
-        } else {
-            val locationProvider = LocationManager.GPS_PROVIDER
-            currentLatLng = locationManager?.getLastKnownLocation(locationProvider)
-        }
-        return currentLatLng!!
+    @SuppressLint("MissingPermission")
+    private fun getLatLng() : Location? {
+        var currentLatLng: Location?
+        val locationProvider = LocationManager.GPS_PROVIDER
+        currentLatLng = locationManager?.getLastKnownLocation(locationProvider)
+
+        return currentLatLng
     }
 
     private fun moveToNextActivity() {

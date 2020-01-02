@@ -36,8 +36,9 @@ class SplashActivity : AppCompatActivity() {
         var firstRun = SharedPreferenceController.getFirstRun(this)
         lateinit var intent : Intent
         if(firstRun) { //첫 실행
-            while (ActivityCompat.checkSelfPermission(applicationContext, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_PHONE_STATE), 100)
+            while (ActivityCompat.checkSelfPermission(applicationContext, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED
+                    || ActivityCompat.checkSelfPermission(applicationContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_PHONE_STATE, Manifest.permission.ACCESS_FINE_LOCATION), 100)
             }
             var phoneNum: String
             val telManager = getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
